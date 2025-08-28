@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><?php echo htmlspecialchars($title ?? (\App\Core\Env::get('APP_NAME', 'apks/apks_mvcoop'))); ?></title>
+  <style>
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.5;margin:2rem;background:#f7f7f9;color:#222}
+    .card{max-width:720px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,.04);overflow:hidden}
+    .card header{padding:1rem 1.25rem;border-bottom:1px solid #f0f0f0;font-weight:600}
+    .card .content{padding:1.25rem}
+    .card footer{padding:.75rem 1.25rem;border-top:1px solid #f0f0f0;font-size:.9rem;color:#6b7280;background:#fafafa}
+    code{background:#f3f4f6;padding:.125rem .375rem;border-radius:6px}
+    .muted{color:#6b7280}
+  </style>
+</head>
+<body>
+  <?php
+    // Determine repository name: prefer composer.json name; fallback to APP_NAME
+    $repoName = null;
+    $composerPath = dirname(__DIR__, 2) . DIRECTORY_SEPARATOR . 'composer.json';
+    if (is_file($composerPath) && is_readable($composerPath)) {
+        $json = @file_get_contents($composerPath);
+        if ($json !== false) {
+            $data = @json_decode($json, true);
+            if (is_array($data) && isset($data['name']) && $data['name'] !== '') {
+                $repoName = $data['name'];
+            }
+        }
+    }
+    if ($repoName === null || $repoName === '') {
+        $repoName = \App\Core\Env::get('APP_NAME', 'apks/apks_mvcoop');
+    }
+  ?>
+  <div class="card">
+    <header><?php echo htmlspecialchars($title ?? (\App\Core\Env::get('APP_NAME', 'apks/apks_mvcoop'))); ?></header>
+    <div class="content">
+      <?php echo $content ?? ''; ?>
+    </div>
+    <footer>
+      Repository: <code><?php echo htmlspecialchars((string)$repoName); ?></code>
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,28 @@
+{
+  "name": "apks/apks_iiot",
+  "description": "APKS IIoT System",
+  "type": "project",
+  "authors": [
+    {
+      "name": "Pattanapong Suwan",
+      "email": "psuwan@yahoo.com"
+    }
+  ],
+  "require": {
+    "php": ">=7.4",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "require-dev": {},
+  "scripts": {
+    "post-autoload-dump": [
+      "@php -r \"echo 'Autoload generated'.PHP_EOL;\""
+    ]
+  }
+}
