@@ -1,0 +1,6 @@
+<?php $footer = $menu['footer'] ?? array(); ?>
+<?php if (($footer['showRepository'] ?? true) !== false): ?>
+<div>
+  <?php echo htmlspecialchars(\App\Core\I18n::t('repository')); ?>: <code><?php echo htmlspecialchars((string)$repoName); ?></code>
+</div>
+<?php endif; ?>

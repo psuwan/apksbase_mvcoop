@@ -1,0 +1,40 @@
+{
+  "navbar": {
+    "brand": "ตัวเริ่มระบบ IIoT",
+    "left": [
+      {"label": "home", "href": "/"},
+      {"label": "hello", "href": "/hello"},
+      {"label": "sample", "href": "/sample"}
+    ],
+    "rightGroups": [
+      {"title": "general", "items": [
+        {"label": "dashboard", "href": "#"},
+        {"label": "reports", "href": "#"}
+      ]},
+      {"title": "users", "items": [
+        {"label": "users", "href": "#"},
+        {"label": "roles", "href": "#"},
+        {"label": "profile", "href": "#"}
+      ]}
+    ]
+  },
+  "sidebar": {
+    "sections": [
+      {"title": "system", "items": [
+        {"label": "devices", "href": "#"},
+        {"label": "gateways", "href": "#"},
+        {"label": "telemetry", "href": "#"},
+        {"label": "alerts", "href": "#"},
+        {"label": "rules_engine", "href": "#"},
+        {"label": "digital_twins", "href": "#"},
+        {"label": "assets", "href": "#"},
+        {"label": "maintenance", "href": "#"},
+        {"label": "integrations", "href": "#"},
+        {"label": "system_settings", "href": "#"}
+      ]}
+    ]
+  },
+  "footer": {
+    "showRepository": true
+  }
+}

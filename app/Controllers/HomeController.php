@@ -7,6 +7,6 @@ class HomeController extends Controller
 {
     public function index(): string
     {
-        return $this->view('home', array('title' => 'Welcome'));
+        return $this->view('home', array('title' => \App\Core\I18n::t('welcome')));
     }
 }

@@ -29,7 +29,8 @@ class Router
 
         if ($handler === null) {
             if ($this->fallback) {
-                call_user_func($this->fallback);
+                $result = call_user_func($this->fallback);
+                $this->output($result);
                 return;
             }
             http_response_code(404);
@@ -41,11 +42,24 @@ class Router
             $class = $handler[0];
             $method = $handler[1];
             $instance = new $class();
-            echo call_user_func(array($instance, $method));
+            $result = call_user_func(array($instance, $method));
+            $this->output($result);
             return;
         }
 
-        echo call_user_func($handler);
+        $result = call_user_func($handler);
+        $this->output($result);
+    }
+
+    private function output($result): void
+    {
+        if ($result instanceof Response) {
+            $result->send();
+            return;
+        }
+        if ($result !== null) {
+            echo $result;
+        }
     }
 
     private function normalize($path): string

@@ -1,0 +1,45 @@
+<?php
+// Expects $appName available in parent scope
+?>
+<div class="menu">
+  <?php $nav = $menu['navbar'] ?? array(); ?>
+  <div class="brand"><?php echo htmlspecialchars((string)($nav['brand'] ?? \App\Core\I18n::t('brand'))); ?> • <?php echo htmlspecialchars((string)$appName); ?></div>
+  <?php if (!empty($nav['left']) && is_array($nav['left'])): ?>
+    <?php foreach ($nav['left'] as $link): ?>
+      <a href="<?php echo htmlspecialchars((string)($link['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($link['label'] ?? ''))); ?></a>
+    <?php endforeach; ?>
+  <?php endif; ?>
+  <div class="right">
+    <?php if (!empty($nav['rightGroups']) && is_array($nav['rightGroups'])): ?>
+      <?php foreach ($nav['rightGroups'] as $group): ?>
+        <span class="muted"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($group['title'] ?? ''))); ?>:</span>
+        <?php if (!empty($group['items']) && is_array($group['items'])): ?>
+          <?php foreach ($group['items'] as $item): ?>
+            <a href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></a>
+          <?php endforeach; ?>
+        <?php endif; ?>
+      <?php endforeach; ?>
+    <?php endif; ?>
+    <span style="margin-left:1rem"></span>
+    <?php $currentLang = \App\Core\I18n::getLocale(); $targetLang = ($currentLang === 'th') ? 'en' : 'th'; ?>
+    <a href="?lang=<?php echo htmlspecialchars($targetLang); ?>"
+       title="<?php echo ($targetLang === 'th') ? 'Switch to ไทย' : 'Switch to English'; ?>"
+       aria-label="<?php echo ($targetLang === 'th') ? 'Switch to Thai' : 'Switch to English'; ?>">
+      <?php if ($currentLang === 'en'): ?>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 60 40" style="display:block;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)">
+          <rect width="60" height="40" fill="#012169"/>
+          <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/>
+          <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4"/>
+          <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="10"/>
+          <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="6"/>
+        </svg>
+      <?php else: ?>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 60 40" style="display:block;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)">
+          <rect width="60" height="40" fill="#A51931"/>
+          <rect y="8" width="60" height="24" fill="#fff"/>
+          <rect y="14" width="60" height="12" fill="#2D2A4A"/>
+        </svg>
+      <?php endif; ?>
+    </a>
+  </div>
+</div>

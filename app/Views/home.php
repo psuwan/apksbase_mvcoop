@@ -1,2 +1,2 @@
-<p>You are running the <strong>apks_mvcoop</strong> PHP MVC starter.</p>
-<p class="muted">Edit <code>app/Views/home.php</code> to change this page.</p>
+<p><?php echo \App\Core\I18n::t('app_running'); ?></p>
+<p class="muted"><?php echo \App\Core\I18n::t('edit_home'); ?></p>

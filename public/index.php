@@ -17,6 +17,7 @@ $router = new Router();
 
 // Register core/base routes
 $router->get('/', array('App\\Controllers\\HomeController', 'index'));
+$router->get('/sample', array('App\\Controllers\\SampleController', 'index'));
 
 // Load and register modules
 $modules = array();
@@ -60,5 +61,13 @@ $router->fallback(function () {
     $ctrl = new class extends \App\Core\Controller { public function render404() { return $this->view('404', array('title' => '404 Not Found')); } };
     echo $ctrl->render404();
 });
+
+// Locale bootstrap: from query ?lang=xx or cookie 'lang'
+$lang = $_GET['lang'] ?? $_COOKIE['lang'] ?? 'en';
+\App\Core\I18n::setLocale(is_string($lang) ? $lang : 'en');
+// Persist selection if provided via query
+if (isset($_GET['lang']) && is_string($_GET['lang'])) {
+    setcookie('lang', $_GET['lang'], time() + 86400*365, '/');
+}
 
 $router->dispatch(Request::fromGlobals());
