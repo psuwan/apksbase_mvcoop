@@ -4,38 +4,208 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo htmlspecialchars($title ?? (\App\Core\Env::get('APP_NAME', 'apks/apks_mvcoop'))); ?></title>
+  <!-- Bootstrap CSS (Local) -->
+    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="./assets/fonts/fontawesome/css/all.css">
   <style>
-    :root{--bg:#f7f7f9;--text:#222;--muted:#6b7280;--card:#fff;--border:#e5e7eb;--shadow:0 1px 2px rgba(0,0,0,.04);--nav:#0f172a;--nav-text:#e5e7eb;--sidebar:#111827;--sidebar-text:#d1d5db;--accent:#22c55e}
+    /* Offline Google Font: Prompt (static weights available in repo) */
+    /* Regular (400) */
+    @font-face {
+      font-family: 'Prompt';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('/assets/fonts/prompt/Prompt-Regular.woff2') format('woff2'),
+           url('/assets/fonts/prompt/Prompt-Regular.woff') format('woff');
+    }
+    /* Bold (700) */
+    @font-face {
+      font-family: 'Prompt';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('/assets/fonts/prompt/Prompt-Bold.woff2') format('woff2'),
+           url('/assets/fonts/prompt/Prompt-Bold.woff') format('woff');
+    }
+    /* Note: Italic or variable font files are optional. If you add them later, you can define additional @font-face blocks. */
+    :root{--bg:#f7f7f9;--text:#222;--muted:#6b7280;--card:#fff;--border:#e5e7eb;--shadow:0 1px 2px rgba(0,0,0,.04);--nav:#4a4a4a;--nav-text:#e5e7eb;--sidebar:#4a4a4a;--sidebar-text:#d1d5db;--accent:#22c55e}
     *{box-sizing:border-box}
-    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.5;margin:0;background:var(--bg);color:var(--text)}
+    html{font-size:16px}
+    body{font-family:'Prompt', system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;line-height:1.5;margin:0;background:var(--bg);color:var(--text)}
+    img,svg,video{max-width:100%;height:auto}
     a{color:inherit;text-decoration:none}
     .muted{color:var(--muted)}
-    /* Navbar */
-    .navbar{position:sticky;top:0;z-index:10;background:var(--nav);color:var(--nav-text);padding:.75rem 1rem;box-shadow:var(--shadow)}
-    .navbar .brand{font-weight:700;letter-spacing:.2px}
-    .navbar .menu{display:flex;gap:1rem;align-items:center}
-    .navbar .right{margin-left:auto;display:flex;gap:1rem}
+
+    /* Mobile-first Navbar */
+    .navbar{position:sticky;top:0;z-index:20;background:var(--nav);color:var(--nav-text);padding:.5rem .75rem;box-shadow:var(--shadow)}
+    .navbar .menu{display:flex;gap:.5rem;align-items:center;position:relative}
+    .navbar .brand{font-weight:700;letter-spacing:.2px;font-size:1rem;white-space:nowrap}
+    .brand-center{display:none}
     .navbar a{color:var(--nav-text);opacity:.95}
     .navbar a:hover{opacity:1}
-    /* Layout */
-    .layout{display:flex;min-height:calc(100vh - 56px)}
-    /* Sidebar */
-    .sidebar{width:240px;background:var(--sidebar);color:var(--sidebar-text);padding:1rem .75rem;position:sticky;top:56px;height:calc(100vh - 56px);overflow:auto}
+    .navbar .right{margin-left:auto;display:flex;gap:.5rem;align-items:center}
+    .navbar .links{display:flex;gap:.5rem;overflow:auto hidden;scrollbar-width:none}
+    .navbar .links::-webkit-scrollbar{display:none}
+    /* Hide language switch inside partial because we render a global one */
+    .navbar .links .lang-switch{display:none}
+    /* Mobile navbar collapse (Bootstrap-like) */
+    .nav-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--nav-text);margin-left:.25rem}
+    .nav-collapse{display:none}
+    .nav-collapse.show{display:block}
+    /* Dropdown anchored under the button on mobile */
+    .nav-drop{position:relative}
+    .nav-drop .nav-collapse{position:absolute;top:calc(100% + 6px);right:0;left:auto;background:var(--nav);border:1px solid rgba(255,255,255,.15);border-radius:0;padding:.5rem;box-shadow:0 8px 16px rgba(0,0,0,.25);min-width:220px;max-width:100vw;max-height:70vh;overflow:auto;z-index:25;margin-right:calc(-0.75rem)}
+    .nav-collapse.show .links{display:block !important}
+    .nav-collapse.show .links .menu{display:flex;flex-direction:column;gap:.25rem;text-align:left !important}
+    .nav-collapse.show .links .menu *{text-align:left !important}
+    .nav-collapse.show .links .menu .right{order:3;margin-left:0;display:flex;flex-direction:column;gap:.25rem;text-align:left}
+    .nav-collapse.show .links .menu a,
+    .nav-collapse.show .links .menu .muted{display:block;padding:.375rem .25rem;text-align:left !important}
+    @media (min-width: 768px){
+      .nav-toggle{display:none}
+      .nav-collapse{display:flex;gap:.5rem;align-items:center;min-width:0;flex:1 1 auto}
+      /* Reset layout to inline for tablet/desktop */
+      .nav-drop{position:static}
+      .nav-drop .nav-collapse{position:static;top:auto;left:auto;background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;min-width:0}
+      .nav-collapse .links{display:block}
+      .nav-collapse .links .menu{flex-direction:row;gap:.5rem}
+      .nav-collapse .links .menu .right{flex-direction:row;margin-left:auto}
+      /* On desktop, keep global flag on right and hide any partial flag */
+      .navbar .links .lang-switch{display:none}
+    }
+
+    /* Bootstrap Integration Styles */
+    /* Override Bootstrap navbar styles to match existing design */
+    .navbar-dark .navbar-brand,
+    .navbar-dark .navbar-nav .nav-link {
+      color: var(--nav-text) !important;
+      opacity: 0.95;
+    }
+    .navbar-dark .navbar-nav .nav-link:hover {
+      opacity: 1;
+    }
+    .navbar-dark .navbar-toggler {
+      border-color: rgba(255,255,255,.15);
+    }
+    .navbar-dark .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28229, 231, 235, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+    
+    /* Ensure Bootstrap cards match existing design */
+    .bootstrap-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+    .bootstrap-card .card-header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      font-weight: 700;
+    }
+    .bootstrap-card .card-body {
+      background: var(--card);
+    }
+    
+    /* Maintain existing font family for Bootstrap components */
+    .navbar, .card, .btn {
+      font-family: 'Prompt', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+    }
+    @media (min-width: 992px){
+      .nav-collapse{margin-left:auto}
+    }
+    /* Align and position on large screens */
+    @media (min-width: 992px){
+      .navbar .menu{position:relative;justify-content:flex-end}
+      .navbar .brand{margin-right:0}
+      .navbar .brand.brand-center{display:block;position:absolute;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none}
+      /* Hide inner partial brand on desktop to avoid duplication */
+      .navbar .links .brand{display:none}
+    }
+
+    /* Sidebar toggle (checkbox hack) */
+    #sidebar-toggle{display:none}
+    .hamburger{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--nav-text)}
+    .hamburger:focus{outline:2px solid #93c5fd;outline-offset:2px}
+
+    /* Mobile-first Layout: sidebar is off-canvas */
+    .layout{display:block;min-height:100vh}
+    .right-col{display:flex;flex-direction:column;min-height:100vh}
+    .main{flex:1}
+    .sidebar{position:fixed;inset:0 auto 0 0;width:280px;max-width:85vw;transform:translateX(-100%);transition:transform .25s ease;box-shadow:0 10px 15px rgba(0,0,0,.2);background:var(--sidebar);color:var(--sidebar-text);padding:1rem .75rem;z-index:30;overflow:auto}
+    .sidebar .sidebar-brand{display:flex;align-items:center;gap:.5rem;padding:.25rem .5rem .75rem;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:.75rem}
+    .sidebar .sidebar-brand .logo{width:28px;height:28px;border-radius:6px;background:#22c55e;box-shadow:0 0 0 2px rgba(0,0,0,.15) inset}
+    .sidebar .sidebar-brand .appname{font-weight:700;letter-spacing:.2px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .sidebar .section{margin-bottom:1rem}
     .sidebar .section h4{font-size:.85rem;color:#9ca3af;text-transform:uppercase;margin:.75rem .5rem}
     .sidebar ul{list-style:none;margin:0;padding:0}
     .sidebar li{margin:.25rem 0}
-    .sidebar a{display:block;padding:.5rem .75rem;border-radius:8px;color:var(--sidebar-text)}
+    .sidebar a{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:8px;color:var(--sidebar-text)}
     .sidebar a:hover{background:#1f2937}
+    /* Overlay when sidebar open */
+    .backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);opacity:0;pointer-events:none;transition:opacity .2s ease;z-index:25}
+    #sidebar-toggle:checked ~ .backdrop{opacity:1;pointer-events:auto}
+    #sidebar-toggle:checked ~ .layout .sidebar{transform:translateX(0)}
+
     /* Main content area */
-    .main{flex:1;padding:1rem}
-    .card{max-width:960px;margin:0;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
+    .main{padding:1rem}
+    .card{max-width:100%;margin:0;background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden}
     .card header{padding:1rem 1.25rem;border-bottom:1px solid #f0f0f0;font-weight:600}
     .card .content{padding:1.25rem}
     .card footer{padding:.75rem 1.25rem;border-top:1px solid #f0f0f0;font-size:.9rem;color:var(--muted);background:#fafafa}
     code{background:#f3f4f6;padding:.125rem .375rem;border-radius:6px}
-    /* Small screens */
-    @media(max-width: 900px){.sidebar{display:none}.layout{display:block}.main{padding:1rem}}
+
+    /* Tablet and up */
+    @media (min-width: 768px){
+      .navbar{padding:.75rem 1rem}
+      .navbar .menu{gap:1rem}
+      .navbar .brand{font-size:1.0625rem}
+      /* Keep hamburger for mobile only */
+      .hamburger{display:none}
+      .layout{display:flex;min-height:calc(100vh - 56px)}
+      .right-col{min-height:calc(100vh - 56px)}
+      .sidebar{position:sticky;transform:none;inset:auto;width:240px;top:56px;height:calc(100vh - 56px);box-shadow:none;transition:width .2s ease}
+      /* Desktop sidebar collapse via body class */
+      body.sidebar-collapsed .sidebar{width:72px}
+      body.sidebar-collapsed .sidebar a{padding:.5rem}
+      body.sidebar-collapsed .sidebar .section h4{display:none}
+      body.sidebar-collapsed .main{flex:1}
+      .backdrop{display:none}
+      .main{flex:1}
+      .card{max-width:960px}
+    }
+
+    /* PC layout (desktop) */
+    @media (min-width: 992px){
+      .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
+      body.sidebar-collapsed .layout{grid-template-columns:72px 1fr}
+      .sidebar{position:sticky;top:0;height:100vh;transform:none;box-shadow:none;width:auto}
+      .right-col{display:flex;flex-direction:column;min-width:0}
+      .navbar-inner{position:sticky;top:0;z-index:20}
+      .main{flex:1;padding:1rem}
+    }
+
+    /* Desktop large */
+    @media (min-width: 1200px){
+      .card{max-width:1100px}
+    }
+    /* Show chevron icon on PC screens */
+    @media (min-width: 992px){
+      .desktop-chevron-left{display:inline-block !important}
+      .navbar .menu{justify-content:space-between}
+      .navbar .brand{position:static !important;transform:none !important}
+    }
+    /* Icons spacing and collapsed label hiding */
+    .sidebar i{width:20px;display:inline-block;margin-right:.5rem}
+    @media (min-width: 768px){
+      body.sidebar-collapsed .sidebar i{margin-right:0;text-align:center}
+      body.sidebar-collapsed .sidebar .label{display:none}
+    }
+    /* Mobile chevron toggle */
+    #sidebar-toggle:checked ~ .layout .right-col .navbar .mobile-chevron .chev-right{display:none}
+    #sidebar-toggle:checked ~ .layout .right-col .navbar .mobile-chevron .chev-left{display:block}
+    /* Mobile-visible language switch (outside dropdown) */
+    .mobile-lang{margin-left:.5rem;display:inline-flex;align-items:center}
+    @media (min-width: 768px){ .mobile-lang{display:none} }
   </style>
 </head>
 <body>
@@ -69,28 +239,153 @@
         if (is_array($decoded)) { $menu = $decoded; }
     }
   ?>
-  <!-- Top Navbar: Users and General menu -->
-  <nav class="navbar">
-    <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-navbar.phtml'; ?>
-  </nav>
-
+  <!-- Mobile sidebar toggle control -->
+  <input type="checkbox" id="sidebar-toggle" aria-hidden="true">
+  <label for="sidebar-toggle" class="backdrop" aria-hidden="true"></label>
   <div class="layout">
     <!-- Sidebar: System menu (IIoT focus) -->
     <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div class="appname" title="<?php echo htmlspecialchars((string)$appName); ?>">
+          <?php echo htmlspecialchars((string)$appName); ?>
+        </div>
+      </div>
       <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-sidebar.phtml'; ?>
     </aside>
 
-    <main class="main">
-      <div class="card">
-        <header><?php echo htmlspecialchars($title ?? (\App\Core\Env::get('APP_NAME', 'apks/apks_mvcoop'))); ?></header>
-        <div class="content">
-          <?php echo $content ?? ''; ?>
+    <div class="right-col">
+      <nav class="navbar navbar-expand-md navbar-dark navbar-inner">
+        <div class="container-fluid menu">
+          <!-- Left: Sidebar chevron toggle (mobile + collapse on desktop hidden by media) -->
+          <label for="sidebar-toggle" class="hamburger" aria-label="Toggle menu" title="Menu">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" class="mobile-chevron">
+              <path class="chev-right" d="M9 4l-1.4 1.4L12.2 10 7.6 14.6 9 16l6-6-6-6z"></path>
+              <path class="chev-left" d="M15 4l1.4 1.4L11.8 10l4.6 4.6L15 16l-6-6 6-6z" style="display:none"></path>
+            </svg>
+          </label>
+
+          <!-- Desktop collapse chevron (visible on >=768px via JS) -->
+          <button type="button" id="collapse-toggle" class="hamburger" title="Collapse/expand sidebar" aria-label="Collapse sidebar" style="display:none;margin-right:0.5rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <!-- Initial icon shows left chevron to indicate collapse action on expanded sidebar -->
+              <path d="M15 4l1.4 1.4L11.8 10l4.6 4.6L15 16l-6-6 6-6z" fill="currentColor"/>
+            </svg>
+          </button>
+
+          <!-- Center: App name/brand -->
+          <div class="brand brand-center" style="position:absolute;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none;">
+            <?php echo htmlspecialchars((string)(($menu['navbar']['brand'] ?? null) ?: \App\Core\I18n::t('brand'))); ?> • <?php echo htmlspecialchars((string)$appName); ?>
+          </div>
+
+          <!-- Right: language flag + navbar toggle (mobile), and inline menu on desktop -->
+          <div class="right-group" style="margin-left:auto;display:flex;align-items:center;gap:.5rem">
+            <?php $currentLang = \App\Core\I18n::getLocale(); $targetLang = ($currentLang === 'th') ? 'en' : 'th'; ?>
+            <a class="lang-right" href="?lang=<?php echo htmlspecialchars($targetLang); ?>" title="<?php echo ($targetLang === 'th') ? 'Switch to ไทย' : 'Switch to English'; ?>" aria-label="<?php echo ($targetLang === 'th') ? 'Switch to Thai' : 'Switch to English'; ?>">
+              <?php if ($currentLang === 'en'): ?>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 60 40" style="display:block;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)">
+                  <rect width="60" height="40" fill="#012169"/>
+                  <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/>
+                  <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4"/>
+                  <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="10"/>
+                  <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="6"/>
+                </svg>
+              <?php else: ?>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 60 40" style="display:block;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)">
+                  <rect width="60" height="40" fill="#A51931"/>
+                  <rect y="8" width="60" height="24" fill="#fff"/>
+                  <rect y="14" width="60" height="12" fill="#2D2A4A"/>
+                </svg>
+              <?php endif; ?>
+            </a>
+            <div class="nav-drop">
+            <button type="button" id="nav-toggle" class="navbar-toggler nav-toggle" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" title="Toggle navigation" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navMain" class="collapse navbar-collapse nav-collapse" role="region" aria-label="Primary navigation">
+              <div class="navbar-nav links" style="display:flex;gap:.5rem;align-items:center;min-width:0;flex:1 1 auto">
+                <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-navbar.phtml'; ?>
+              </div>
+            </div>
+          </div>
+          </div>
         </div>
-        <footer>
-          <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-footer.phtml'; ?>
-        </footer>
-      </div>
-    </main>
+      </nav>
+      <main class="main">
+        <div class="container-fluid">
+          <div class="card bootstrap-card">
+            <div class="card-header">
+              <h1 class="card-title mb-0"><?php echo htmlspecialchars($title ?? (\App\Core\Env::get('APP_NAME', 'apks/apks_mvcoop'))); ?></h1>
+            </div>
+            <div class="card-body content">
+              <?php echo $content ?? ''; ?>
+            </div>
+          </div>
+        </div>
+      </main>
+      <footer class="site-footer" style="padding: .75rem 1.25rem; color: var(--muted);">
+        <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-footer.phtml'; ?>
+      </footer>
+    </div>
   </div>
+  <script>
+    (function(){
+      var btn = document.getElementById('collapse-toggle');
+      function setChevron(){
+        if (!btn) return;
+        var path = btn.querySelector('svg path');
+        if (!path) return;
+        if (document.body.classList.contains('sidebar-collapsed')){
+          path.setAttribute('d','M9 4l-1.4 1.4L12.2 10 7.6 14.6 9 16l6-6-6-6z'); // right
+        } else {
+          path.setAttribute('d','M15 4l1.4 1.4L11.8 10l4.6 4.6L15 16l-6-6 6-6z'); // left
+        }
+      }
+      function updateVisibility(){
+        // Show collapse toggle on tablet/desktop
+        if (window.matchMedia('(min-width: 768px)').matches){
+          btn && (btn.style.display = 'inline-flex');
+          setChevron();
+        } else {
+          btn && (btn.style.display = 'none');
+          document.body.classList.remove('sidebar-collapsed');
+        }
+      }
+      updateVisibility();
+      window.addEventListener('resize', updateVisibility);
+      btn && btn.addEventListener('click', function(){
+        document.body.classList.toggle('sidebar-collapsed');
+        // swap chevron direction
+        var svg = btn.querySelector('svg path');
+        if (svg){
+          if (document.body.classList.contains('sidebar-collapsed')){
+            svg.setAttribute('d','M9 4l-1.4 1.4L12.2 10 7.6 14.6 9 16l6-6-6-6z'); // chevron-right
+          } else {
+            svg.setAttribute('d','M15 4l1.4 1.4L11.8 10l4.6 4.6L15 16l-6-6 6-6z'); // chevron-left
+          }
+        }
+      });
+
+      // Navbar collapse toggle (Bootstrap-like behavior)
+      var navToggle = document.getElementById('nav-toggle');
+      var navMain = document.getElementById('navMain');
+      function closeNavOnDesktop(){
+        if (window.matchMedia('(min-width: 768px)').matches){
+          // ensure expanded inline on desktop; aria reflects not a popup state
+          navMain && navMain.classList.remove('show');
+          navToggle && navToggle.setAttribute('aria-expanded','false');
+        }
+      }
+      closeNavOnDesktop();
+      window.addEventListener('resize', closeNavOnDesktop);
+      navToggle && navToggle.addEventListener('click', function(){
+        if (!navMain) return;
+        var isOpen = navMain.classList.toggle('show');
+        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+    })();
+  </script>
+  <!-- Bootstrap JavaScript (Local) -->
+    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -2,9 +2,9 @@
   "navbar": {
     "brand": "ตัวเริ่มระบบ IIoT",
     "left": [
-      {"label": "home", "href": "/"},
-      {"label": "hello", "href": "/hello"},
-      {"label": "sample", "href": "/sample"}
+      {"label": "home", "href": "./"},
+      {"label": "hello", "href": "./hello"},
+      {"label": "sample", "href": "./sample"}
     ],
     "rightGroups": [
       {"title": "general", "items": [
@@ -21,16 +21,16 @@
   "sidebar": {
     "sections": [
       {"title": "system", "items": [
-        {"label": "devices", "href": "#"},
-        {"label": "gateways", "href": "#"},
-        {"label": "telemetry", "href": "#"},
-        {"label": "alerts", "href": "#"},
-        {"label": "rules_engine", "href": "#"},
-        {"label": "digital_twins", "href": "#"},
-        {"label": "assets", "href": "#"},
-        {"label": "maintenance", "href": "#"},
-        {"label": "integrations", "href": "#"},
-        {"label": "system_settings", "href": "#"}
+        {"label": "devices", "href": "#", "icon": "fa-solid fa-microchip"},
+        {"label": "gateways", "href": "#", "icon": "fa-solid fa-route"},
+        {"label": "telemetry", "href": "#", "icon": "fa-solid fa-wave-square"},
+        {"label": "alerts", "href": "#", "icon": "fa-solid fa-bell"},
+        {"label": "rules_engine", "href": "#", "icon": "fa-solid fa-cogs"},
+        {"label": "digital_twins", "href": "#", "icon": "fa-solid fa-cubes"},
+        {"label": "assets", "href": "#", "icon": "fa-solid fa-boxes-stacked"},
+        {"label": "maintenance", "href": "#", "icon": "fa-solid fa-screwdriver-wrench"},
+        {"label": "integrations", "href": "#", "icon": "fa-solid fa-plug"},
+        {"label": "system_settings", "href": "#", "icon": "fa-solid fa-gear"}
       ]}
     ]
   },

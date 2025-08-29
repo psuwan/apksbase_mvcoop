@@ -76,6 +76,22 @@ Create file app/Views/home.php with the following content:
 <p class="muted">Edit <code>app/Views/home.php</code> to change this page.</p>
 ```
 
+## UI Framework (What controls the web application UI?)
+Junie does not use an external CSS/JS UI framework (like Bootstrap) at this time. The UI is controlled by:
+- Custom, mobile‑first CSS and minimal inline JS inside app/Views/layout.phtml.
+- PHP view partials for menus in app/Views/partials (menu-navbar.phtml, menu-sidebar.phtml, menu-footer.phtml).
+- Menu data loaded from JSON configs per language: config/menu-en.json and config/menu-th.json (easy to edit without code changes).
+- Application text translations loaded from Langs/en.json and Langs/th.json via App\Core\I18n.
+
+If you later decide to adopt a framework (e.g., Bootstrap), you can include it in layout.phtml and gradually replace the custom CSS while keeping the JSON-driven menus and i18n.
+
+## Offline font (Google Prompt)
+The app is pre-wired to use the Google font “Prompt” offline. Place the font files under public/assets/fonts/prompt/.
+- Current repo includes static weights: Prompt-Regular.woff2/.woff (400) and Prompt-Bold.woff2/.woff (700). These are already wired in the layout and work offline.
+- Optional: You can add more weights (e.g., Medium) or the variable fonts (Prompt-VariableFont_wght.woff2 and Prompt-Italic-VariableFont_wght.woff2). If you add them, extend the @font-face rules accordingly.
+
+CSS @font-face is embedded in app/Views/layout.phtml and the body uses font-family: 'Prompt', so the font is used without network access.
+
 ## Routing
 Routes are defined by URL path to Controller@method mapping in public/index.php. Update the routes array to fit your app.
 

@@ -12,7 +12,8 @@
     "php": ">=7.4",
     "ext-pdo": "*",
     "ext-pdo_mysql": "*",
-    "ext-json": "*"
+    "ext-json": "*",
+    "twbs/bootstrap": "^5.3"
   },
   "autoload": {
     "psr-4": {

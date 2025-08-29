@@ -5,7 +5,15 @@
     <ul>
       <?php if (!empty($section['items']) && is_array($section['items'])): ?>
         <?php foreach ($section['items'] as $item): ?>
-          <li><a href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></a></li>
+          <?php $icon = isset($item['icon']) ? (string)$item['icon'] : ''; ?>
+          <li>
+            <a href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>">
+              <?php if ($icon !== ''): ?>
+                <i class="<?php echo htmlspecialchars($icon); ?>" aria-hidden="true"></i>
+              <?php endif; ?>
+              <span class="label"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></span>
+            </a>
+          </li>
         <?php endforeach; ?>
       <?php endif; ?>
     </ul>

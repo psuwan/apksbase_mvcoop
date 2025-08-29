@@ -1,0 +1,18 @@
+# Ignore environment files containing secrets
+.env
+
+# Node/npm (if accidentally added)
+node_modules/
+
+# Composer
+/vendor/
+/composer.lock
+
+# IDE/editor
+.vscode/
+.idea/
+*.iml
+
+# OS noise
+.DS_Store
+Thumbs.db
