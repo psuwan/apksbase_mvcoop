@@ -1,27 +1,62 @@
 <?php
 // Expects $appName available in parent scope
 ?>
-<div class="menu">
+<ul class="navbar-nav me-auto">
   <?php $nav = $menu['navbar'] ?? array(); ?>
-  <div class="navbar-brand brand"><?php echo htmlspecialchars((string)($nav['brand'] ?? \App\Core\I18n::t('brand'))); ?> • <?php echo htmlspecialchars((string)$appName); ?></div>
   <?php if (!empty($nav['left']) && is_array($nav['left'])): ?>
     <?php foreach ($nav['left'] as $link): ?>
-      <a class="nav-link" href="<?php echo htmlspecialchars((string)($link['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($link['label'] ?? ''))); ?></a>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo htmlspecialchars((string)($link['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($link['label'] ?? ''))); ?></a>
+      </li>
     <?php endforeach; ?>
   <?php endif; ?>
-  <div class="navbar-nav ms-auto right">
+  
+  <?php if (!empty($nav['leftDropdowns']) && is_array($nav['leftDropdowns'])): ?>
+    <?php foreach ($nav['leftDropdowns'] as $index => $dropdown): ?>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navDropdown<?php echo $index; ?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <?php echo htmlspecialchars(\App\Core\I18n::t((string)($dropdown['label'] ?? ''))); ?>
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navDropdown<?php echo $index; ?>">
+          <?php if (!empty($dropdown['items']) && is_array($dropdown['items'])): ?>
+            <?php foreach ($dropdown['items'] as $item): ?>
+              <?php if (isset($item['divider']) && $item['divider']): ?>
+                <li><hr class="dropdown-divider"></li>
+              <?php else: ?>
+                <li><a class="dropdown-item" href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></a></li>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          <?php endif; ?>
+        </ul>
+      </li>
+    <?php endforeach; ?>
+  <?php endif; ?>
+</ul>
+<ul class="navbar-nav ms-auto">
     <?php if (!empty($nav['rightGroups']) && is_array($nav['rightGroups'])): ?>
-      <?php foreach ($nav['rightGroups'] as $group): ?>
-        <span class="muted"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($group['title'] ?? ''))); ?>:</span>
-        <?php if (!empty($group['items']) && is_array($group['items'])): ?>
-          <?php foreach ($group['items'] as $item): ?>
-            <a class="nav-link" href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></a>
-          <?php endforeach; ?>
-        <?php endif; ?>
+      <?php foreach ($nav['rightGroups'] as $index => $group): ?>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navRightDropdown<?php echo $index; ?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?php echo htmlspecialchars(\App\Core\I18n::t((string)($group['title'] ?? ''))); ?>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navRightDropdown<?php echo $index; ?>">
+            <?php if (!empty($group['items']) && is_array($group['items'])): ?>
+              <?php foreach ($group['items'] as $item): ?>
+                <?php if (isset($item['divider']) && $item['divider']): ?>
+                  <li><hr class="dropdown-divider"></li>
+                <?php else: ?>
+                  <li><a class="dropdown-item" href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></a></li>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            <?php endif; ?>
+          </ul>
+        </li>
       <?php endforeach; ?>
     <?php endif; ?>
-    <span style="margin-left:1rem"></span>
-    <span class="lang-switch">
+    <li class="nav-item">
+      <span style="margin-left:1rem"></span>
+    </li>
+    <li class="nav-item lang-switch">
       <?php $currentLang = \App\Core\I18n::getLocale(); $targetLang = ($currentLang === 'th') ? 'en' : 'th'; ?>
       <a class="nav-link" href="?lang=<?php echo htmlspecialchars($targetLang); ?>"
          title="<?php echo ($targetLang === 'th') ? 'Switch to ไทย' : 'Switch to English'; ?>"
@@ -42,6 +77,5 @@
           </svg>
         <?php endif; ?>
       </a>
-    </span>
-  </div>
-</div>
+    </li>
+</ul>

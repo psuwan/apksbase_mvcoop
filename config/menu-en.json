@@ -2,9 +2,29 @@
   "navbar": {
     "brand": "IIoT Starter",
     "left": [
-      {"label": "home", "href": "./"},
-      {"label": "hello", "href": "./hello"},
-      {"label": "sample", "href": "./sample"}
+      {"label": "home", "href": "/"},
+      {"label": "hello", "href": "/hello"},
+      {"label": "sample", "href": "/sample"}
+    ],
+    "leftDropdowns": [
+      {
+        "label": "system_menu",
+        "items": [
+          {"label": "devices", "href": "/devices"},
+          {"label": "gateways", "href": "/gateways"},
+          {"divider": true},
+          {"label": "telemetry", "href": "/telemetry"},
+          {"label": "alerts", "href": "/alerts"}
+        ]
+      },
+      {
+        "label": "tools_menu",
+        "items": [
+          {"label": "rules_engine", "href": "/rules"},
+          {"label": "digital_twins", "href": "/twins"},
+          {"label": "assets", "href": "/assets"}
+        ]
+      }
     ],
     "rightGroups": [
       {"title": "general", "items": [
@@ -21,11 +41,29 @@
   "sidebar": {
     "sections": [
       {"title": "system", "items": [
-        {"label": "devices", "href": "#", "icon": "fa-solid fa-microchip"},
+        {
+          "label": "devices", 
+          "href": "#", 
+          "icon": "fa-solid fa-microchip",
+          "subItems": [
+            {"label": "device_list", "href": "/devices", "icon": "fa-solid fa-list"},
+            {"label": "add_device", "href": "/devices/add", "icon": "fa-solid fa-plus"},
+            {"label": "device_types", "href": "/devices/types", "icon": "fa-solid fa-tags"}
+          ]
+        },
         {"label": "gateways", "href": "#", "icon": "fa-solid fa-route"},
         {"label": "telemetry", "href": "#", "icon": "fa-solid fa-wave-square"},
         {"label": "alerts", "href": "#", "icon": "fa-solid fa-bell"},
-        {"label": "rules_engine", "href": "#", "icon": "fa-solid fa-cogs"},
+        {
+          "label": "rules_engine", 
+          "href": "#", 
+          "icon": "fa-solid fa-cogs",
+          "subItems": [
+            {"label": "rule_list", "href": "/rules", "icon": "fa-solid fa-list"},
+            {"label": "create_rule", "href": "/rules/create", "icon": "fa-solid fa-plus"},
+            {"label": "rule_templates", "href": "/rules/templates", "icon": "fa-solid fa-file-lines"}
+          ]
+        },
         {"label": "digital_twins", "href": "#", "icon": "fa-solid fa-cubes"},
         {"label": "assets", "href": "#", "icon": "fa-solid fa-boxes-stacked"},
         {"label": "maintenance", "href": "#", "icon": "fa-solid fa-screwdriver-wrench"},

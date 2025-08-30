@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title><?php echo htmlspecialchars($title ?? (\App\Core\Env::get('APP_NAME', 'apks/apks_mvcoop'))); ?></title>
-  <!-- Bootstrap CSS (Local) -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap CSS (Local with CDN fallback) -->
+<link href="./bootstrap/css/bootstrap.min.css" rel="stylesheet" onerror="this.onerror=null;this.href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css';console.log('Bootstrap CSS loaded from CDN fallback');">
   <link rel="stylesheet" href="./assets/fonts/fontawesome/css/all.css">
   <style>
     /* Offline Google Font: Prompt (static weights available in repo) */
@@ -15,8 +15,8 @@
       font-style: normal;
       font-weight: 400;
       font-display: swap;
-      src: url('/assets/fonts/prompt/Prompt-Regular.woff2') format('woff2'),
-           url('/assets/fonts/prompt/Prompt-Regular.woff') format('woff');
+      src: url('./assets/fonts/prompt/Prompt-Regular.woff2') format('woff2'),
+           url('./assets/fonts/prompt/Prompt-Regular.woff') format('woff');
     }
     /* Bold (700) */
     @font-face {
@@ -24,8 +24,8 @@
       font-style: normal;
       font-weight: 700;
       font-display: swap;
-      src: url('/assets/fonts/prompt/Prompt-Bold.woff2') format('woff2'),
-           url('/assets/fonts/prompt/Prompt-Bold.woff') format('woff');
+      src: url('./assets/fonts/prompt/Prompt-Bold.woff2') format('woff2'),
+           url('./assets/fonts/prompt/Prompt-Bold.woff') format('woff');
     }
     /* Note: Italic or variable font files are optional. If you add them later, you can define additional @font-face blocks. */
     :root{--bg:#f7f7f9;--text:#222;--muted:#6b7280;--card:#fff;--border:#e5e7eb;--shadow:0 1px 2px rgba(0,0,0,.04);--nav:#4a4a4a;--nav-text:#e5e7eb;--sidebar:#4a4a4a;--sidebar-text:#d1d5db;--accent:#22c55e}
@@ -44,7 +44,7 @@
     .navbar a{color:var(--nav-text);opacity:.95}
     .navbar a:hover{opacity:1}
     .navbar .right{margin-left:auto;display:flex;gap:.5rem;align-items:center}
-    .navbar .links{display:flex;gap:.5rem;overflow:auto hidden;scrollbar-width:none}
+    .navbar .links{display:flex;gap:.5rem;overflow:visible;scrollbar-width:none}
     .navbar .links::-webkit-scrollbar{display:none}
     /* Hide language switch inside partial because we render a global one */
     .navbar .links .lang-switch{display:none}
@@ -110,6 +110,76 @@
     .navbar, .card, .btn {
       font-family: 'Prompt', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
     }
+    
+    /* Dropdown menu styling */
+    .dropdown-menu {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      z-index: 1050 !important;
+      position: absolute !important;
+      display: none;
+    }
+    .dropdown-menu.show {
+      display: block !important;
+    }
+    .dropdown-item {
+      color: var(--text);
+      display: block;
+      width: 100%;
+      padding: 0.375rem 1rem;
+      clear: both;
+      font-weight: 400;
+      text-align: inherit;
+      text-decoration: none;
+      white-space: nowrap;
+      background-color: transparent;
+      border: 0;
+    }
+    .dropdown-item:hover, .dropdown-item:focus {
+      background-color: var(--hover);
+      color: var(--text);
+    }
+    
+    /* Ensure dropdown parent has relative positioning */
+    .dropdown {
+      position: relative;
+    }
+    
+    /* Navbar specific dropdown fixes */
+    .navbar .dropdown-menu {
+      z-index: 1060 !important;
+      min-width: 160px;
+    }
+    
+    /* Prevent navbar from clipping dropdowns */
+    .navbar {
+      overflow: visible !important;
+    }
+    .navbar-inner {
+      overflow: visible !important;
+    }
+    .nav-collapse {
+      overflow: visible !important;
+    }
+    
+    /* Sidebar dropdown styling */
+    .sidebar .dropdown-toggle::after {
+      float: right;
+      margin-top: 0.5rem;
+    }
+    .sidebar .collapse ul {
+      padding-left: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .sidebar .collapse ul li a {
+      padding: 0.25rem 0;
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
+    .sidebar .collapse ul li a:hover {
+      opacity: 1;
+    }
     @media (min-width: 992px){
       .nav-collapse{margin-left:auto}
     }
@@ -166,9 +236,27 @@
       .sidebar{position:sticky;transform:none;inset:auto;width:240px;top:56px;height:calc(100vh - 56px);box-shadow:none;transition:width .2s ease}
       /* Desktop sidebar collapse via body class */
       body.sidebar-collapsed .sidebar{width:72px}
-      body.sidebar-collapsed .sidebar a{padding:.5rem}
+      body.sidebar-collapsed .sidebar a{padding:.5rem;justify-content:center}
       body.sidebar-collapsed .sidebar .section h4{display:none}
+      body.sidebar-collapsed .sidebar .label{display:none}
+      body.sidebar-collapsed .sidebar .appname{display:none}
+      body.sidebar-collapsed .sidebar .collapse{display:none !important}
       body.sidebar-collapsed .main{flex:1}
+      
+      /* Hover effect for collapsed sidebar */
+      body.sidebar-collapsed .sidebar:hover{width:240px;z-index:40;box-shadow:0 10px 15px rgba(0,0,0,.2)}
+      body.sidebar-collapsed .sidebar:hover a{padding:.5rem .75rem;justify-content:flex-start}
+      body.sidebar-collapsed .sidebar:hover .section h4{display:block}
+      body.sidebar-collapsed .sidebar:hover .label{display:inline}
+      body.sidebar-collapsed .sidebar:hover .appname{display:block}
+      body.sidebar-collapsed .sidebar:hover .collapse{display:block !important}
+      
+      /* Sub-item icon styling */
+      .sidebar .collapse li a{display:flex;align-items:center;gap:.5rem;padding:.25rem .75rem;margin-left:1rem}
+      .sidebar .collapse li a i{font-size:.875rem;width:1rem;text-align:center}
+      body.sidebar-collapsed .sidebar .collapse li a{justify-content:center;margin-left:0;padding:.25rem}
+      body.sidebar-collapsed .sidebar:hover .collapse li a{justify-content:flex-start;margin-left:1rem;padding:.25rem .75rem}
+      
       .backdrop{display:none}
       .main{flex:1}
       .card{max-width:960px}
@@ -178,6 +266,9 @@
     @media (min-width: 992px){
       .layout{display:grid;grid-template-columns:260px 1fr;min-height:100vh}
       body.sidebar-collapsed .layout{grid-template-columns:72px 1fr}
+      /* Ensure sidebar hover doesn't affect grid layout */
+      body.sidebar-collapsed .sidebar{position:relative}
+      body.sidebar-collapsed .sidebar:hover{position:absolute;left:0;top:0;height:100vh}
       .sidebar{position:sticky;top:0;height:100vh;transform:none;box-shadow:none;width:auto}
       .right-col{display:flex;flex-direction:column;min-width:0}
       .navbar-inner{position:sticky;top:0;z-index:20}
@@ -385,7 +476,121 @@
       });
     })();
   </script>
-  <!-- Bootstrap JavaScript (Local) -->
-    <script src="/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <!-- Bootstrap JavaScript (Local with CDN fallback) -->
+    <script src="./bootstrap/js/bootstrap.bundle.min.js" onload="console.log('Bootstrap script loaded successfully');" onerror="console.error('Bootstrap script failed to load'); loadBootstrapCDN();"></script>
+    <script>
+      function loadBootstrapCDN() {
+        console.log('Loading Bootstrap from CDN as fallback...');
+        var script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
+        script.onload = function() {
+          console.log('Bootstrap CDN loaded successfully');
+          // Initialize components now that Bootstrap is loaded
+          if (typeof initializeBootstrapComponents === 'function') {
+            initializeBootstrapComponents();
+          }
+        };
+        script.onerror = function() {
+          console.error('Bootstrap CDN also failed to load');
+        };
+        document.head.appendChild(script);
+      }
+    </script>
+    <script>
+      // Global error handler to catch JavaScript errors
+      window.addEventListener('error', function(e) {
+        console.error('JavaScript Error:', e.error);
+        console.error('Error message:', e.message);
+        console.error('Error filename:', e.filename);
+        console.error('Error line:', e.lineno);
+        var debugDiv = document.getElementById('debug-indicator');
+        if (debugDiv) {
+          debugDiv.textContent = 'DEBUG: JS ERROR - ' + e.message;
+          debugDiv.style.background = 'orange';
+        }
+      });
+      
+      // Debug Bootstrap dropdown initialization and click events
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add visual indicator that script is running
+        document.title = 'DEBUG: Script loaded - ' + document.title;
+        console.log('=== BOOTSTRAP DEBUG SCRIPT STARTED ===');
+        console.log('Document ready state:', document.readyState);
+        console.log('Window location:', window.location.href);
+        
+        function checkBootstrap(attempt) {
+          console.log('Bootstrap check attempt ' + attempt + ':');
+          console.log('- typeof bootstrap:', typeof bootstrap);
+          console.log('- window.bootstrap:', typeof window.bootstrap);
+          console.log('- Bootstrap version:', typeof bootstrap !== 'undefined' ? bootstrap.Tooltip.VERSION : 'Bootstrap not loaded');
+          console.log('- Bootstrap object keys:', typeof bootstrap !== 'undefined' ? Object.keys(bootstrap) : 'Not available');
+          
+          // Check if Bootstrap script is in DOM
+          var bootstrapScripts = document.querySelectorAll('script[src*="bootstrap"]');
+          console.log('- Bootstrap scripts found in DOM:', bootstrapScripts.length);
+          bootstrapScripts.forEach(function(script, index) {
+            console.log('  Script ' + index + ':', script.src, 'loaded:', script.readyState || 'unknown');
+          });
+          
+          return typeof bootstrap !== 'undefined';
+        }
+        
+        // Check Bootstrap immediately
+        var bootstrapLoaded = checkBootstrap(1);
+        if (bootstrapLoaded) {
+          initializeBootstrapComponents();
+        }
+        
+        // If not loaded, check again after delays
+        if (!bootstrapLoaded) {
+          setTimeout(function() {
+            bootstrapLoaded = checkBootstrap(2);
+            if (bootstrapLoaded) {
+              initializeBootstrapComponents();
+            } else {
+              setTimeout(function() {
+                bootstrapLoaded = checkBootstrap(3);
+                if (bootstrapLoaded) {
+                  initializeBootstrapComponents();
+                }
+              }, 2000);
+            }
+          }, 500);
+        }
+        
+        // Initialize Bootstrap components
+        function initializeBootstrapComponents() {
+          if (typeof bootstrap === 'undefined') {
+            return false;
+          }
+          
+          // Initialize navbar dropdowns
+          var navDropdowns = document.querySelectorAll('.navbar .dropdown-toggle');
+          navDropdowns.forEach(function(el) {
+            try {
+              new bootstrap.Dropdown(el);
+            } catch(e) {
+              console.error('Failed to initialize navbar dropdown:', e);
+            }
+          });
+          
+          // Initialize sidebar collapse elements
+          var sidebarCollapses = document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]');
+          sidebarCollapses.forEach(function(el) {
+            try {
+              var targetSelector = el.getAttribute('href');
+              var targetElement = document.querySelector(targetSelector);
+              if (targetElement) {
+                new bootstrap.Collapse(targetElement, {toggle: false});
+              }
+            } catch(e) {
+              console.error('Failed to initialize sidebar collapse:', e);
+            }
+          });
+          
+          return true;
+        }
+      });
+    </script>
 </body>
 </html>

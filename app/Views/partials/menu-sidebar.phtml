@@ -1,18 +1,43 @@
 <?php $sections = $menu['sidebar']['sections'] ?? array(); ?>
+
 <?php foreach ($sections as $section): ?>
   <div class="section">
     <h4><?php echo htmlspecialchars(\App\Core\I18n::t((string)($section['title'] ?? ''))); ?></h4>
     <ul>
       <?php if (!empty($section['items']) && is_array($section['items'])): ?>
-        <?php foreach ($section['items'] as $item): ?>
+        <?php foreach ($section['items'] as $index => $item): ?>
           <?php $icon = isset($item['icon']) ? (string)$item['icon'] : ''; ?>
+          <?php $hasSubItems = !empty($item['subItems']) && is_array($item['subItems']); ?>
           <li>
-            <a href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>">
-              <?php if ($icon !== ''): ?>
-                <i class="<?php echo htmlspecialchars($icon); ?>" aria-hidden="true"></i>
-              <?php endif; ?>
-              <span class="label"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></span>
-            </a>
+            <?php if ($hasSubItems): ?>
+              <?php $collapseId = 'collapse-' . $section['title'] . '-' . $index; ?>
+              <a href="#<?php echo htmlspecialchars($collapseId); ?>" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <?php if ($icon !== ''): ?>
+                  <i class="<?php echo htmlspecialchars($icon); ?>" aria-hidden="true"></i>
+                <?php endif; ?>
+                <span class="label"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></span>
+              </a>
+              <ul class="collapse list-unstyled" id="<?php echo htmlspecialchars($collapseId); ?>">
+                <?php foreach ($item['subItems'] as $subItem): ?>
+                  <?php $subIcon = isset($subItem['icon']) ? (string)$subItem['icon'] : ''; ?>
+                  <li>
+                    <a href="<?php echo htmlspecialchars((string)($subItem['href'] ?? '#')); ?>">
+                      <?php if ($subIcon !== ''): ?>
+                        <i class="<?php echo htmlspecialchars($subIcon); ?>" aria-hidden="true"></i>
+                      <?php endif; ?>
+                      <span class="label"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($subItem['label'] ?? ''))); ?></span>
+                    </a>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            <?php else: ?>
+              <a href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>">
+                <?php if ($icon !== ''): ?>
+                  <i class="<?php echo htmlspecialchars($icon); ?>" aria-hidden="true"></i>
+                <?php endif; ?>
+                <span class="label"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></span>
+              </a>
+            <?php endif; ?>
           </li>
         <?php endforeach; ?>
       <?php endif; ?>
