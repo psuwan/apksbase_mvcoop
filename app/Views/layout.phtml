@@ -117,8 +117,30 @@
       .mobile-accordion .dropdown-menu.show{position:static!important;display:block!important;box-shadow:none!important;border:none!important}
     }
     .navbar .dropdown-menu{z-index:1060!important;min-width:160px}
-    .dropdown-item{color:var(--text);display:block;width:100%;padding:.375rem 1rem;clear:both;font-weight:400;text-align:inherit;text-decoration:none;white-space:nowrap;background-color:transparent;border:0}
-    .dropdown-item:hover,.dropdown-item:focus{background-color:var(--hover);color:var(--text)}
+    .dropdown-item{color:var(--text);display:block;width:100%;padding:.375rem 1rem;clear:both;font-weight:400;text-align:inherit;text-decoration:none;white-space:nowrap;background-color:transparent;border:0;transition:all 0.15s ease-in-out}
+    
+    /* Enhanced dropdown hover effects for all screens */
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+      background-color: #f8f9fa !important;
+      color: #212529 !important;
+      text-decoration: none !important;
+    }
+    
+    /* Additional desktop-specific hover effects */
+    @media (min-width: 768px) {
+      .navbar .dropdown-menu .dropdown-item:hover {
+        background-color: #f8f9fa !important;
+        color: #212529 !important;
+        transform: translateX(2px);
+        transition: all 0.15s ease-in-out;
+      }
+      .navbar .dropdown-menu .dropdown-item:focus {
+        background-color: #e9ecef !important;
+        color: #212529 !important;
+        outline: none;
+      }
+    }
     .navbar,.navbar-inner,.nav-collapse{overflow:visible!important}
     
     /* Sidebar Styles */

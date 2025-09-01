@@ -2,41 +2,30 @@
 // Navbar menu template
 // Expected variables: $nav (array with navbar configuration)
 $nav = $GLOBALS['nav'] ?? [];
+$leftItems = $nav['left'] ?? [];
+$leftDropdowns = $nav['leftDropdowns'] ?? [];
 ?>
 <ul class="navbar-nav me-auto">
-  <!-- Simplified menu: 4 items total, 2 with sub-menus -->
+  <?php foreach ($leftItems as $item): ?>
   <li class="nav-item">
-    <a class="nav-link" href="/">Home</a>
+    <a class="nav-link" href="<?php echo htmlspecialchars($item['href']); ?>"><?php echo htmlspecialchars($item['label']); ?></a>
   </li>
-  <li class="nav-item">
-    <a class="nav-link" href="/sample">Sample</a>
-  </li>
+  <?php endforeach; ?>
   
-  <!-- System Menu dropdown -->
+  <?php foreach ($leftDropdowns as $index => $dropdown): ?>
   <li class="nav-item dropdown mobile-accordion">
-    <a class="nav-link dropdown-toggle mobile-accordion-toggle" href="#" id="navDropdown0" role="button" data-bs-target="#mobileAccordion0" aria-expanded="false">
-      System
+    <a class="nav-link dropdown-toggle mobile-accordion-toggle" href="#" id="navDropdown<?php echo $index; ?>" role="button" data-bs-target="#mobileAccordion<?php echo $index; ?>" aria-expanded="false">
+      <?php echo htmlspecialchars($dropdown['label']); ?>
     </a>
-    <ul class="dropdown-menu mobile-accordion-content collapse" id="mobileAccordion0" aria-labelledby="navDropdown0">
-      <li><a class="dropdown-item" href="/devices">Devices</a></li>
-      <li><a class="dropdown-item" href="/gateways">Gateways</a></li>
-      <li><a class="dropdown-item" href="/telemetry">Telemetry</a></li>
-      <li><a class="dropdown-item" href="/alerts">Alerts</a></li>
+    <ul class="dropdown-menu mobile-accordion-content collapse" id="mobileAccordion<?php echo $index; ?>" aria-labelledby="navDropdown<?php echo $index; ?>">
+      <?php foreach ($dropdown['items'] as $item): ?>
+        <?php if (isset($item['divider']) && $item['divider']): ?>
+          <li><hr class="dropdown-divider"></li>
+        <?php else: ?>
+          <li><a class="dropdown-item" href="<?php echo htmlspecialchars($item['href']); ?>"><?php echo htmlspecialchars($item['label']); ?></a></li>
+        <?php endif; ?>
+      <?php endforeach; ?>
     </ul>
   </li>
-  
-  <!-- Tools Menu dropdown -->
-  <li class="nav-item dropdown mobile-accordion">
-    <a class="nav-link dropdown-toggle mobile-accordion-toggle" href="#" id="navDropdown1" role="button" data-bs-target="#mobileAccordion1" aria-expanded="false">
-      Tools
-    </a>
-    <ul class="dropdown-menu mobile-accordion-content collapse" id="mobileAccordion1" aria-labelledby="navDropdown1">
-      <li><a class="dropdown-item" href="/rules">Rules Engine</a></li>
-      <li><a class="dropdown-item" href="/twins">Digital Twins</a></li>
-      <li><a class="dropdown-item" href="/assets">Assets</a></li>
-      <li><hr class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="/users">Users</a></li>
-      <li><a class="dropdown-item" href="/profile">Profile</a></li>
-    </ul>
-  </li>
+  <?php endforeach; ?>
 </ul>

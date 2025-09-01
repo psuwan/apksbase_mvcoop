@@ -2,27 +2,27 @@
   "navbar": {
     "brand": "ตัวเริ่มระบบ IIoT",
     "left": [
-      {"label": "home", "href": "/"},
-      {"label": "hello", "href": "/hello"},
-      {"label": "sample", "href": "/sample"}
+      {"label": "home", "href": "./"},
+      {"label": "hello-ddddd", "href": "./hello"},
+      {"label": "sample", "href": "./sample"}
     ],
     "leftDropdowns": [
       {
         "label": "system_menu",
         "items": [
-          {"label": "devices", "href": "/devices"},
-          {"label": "gateways", "href": "/gateways"},
+          {"label": "devices", "href": "./devices"},
+          {"label": "gateways", "href": "./gateways"},
           {"divider": true},
-          {"label": "telemetry", "href": "/telemetry"},
-          {"label": "alerts", "href": "/alerts"}
+          {"label": "telemetry", "href": "./telemetry"},
+          {"label": "alerts", "href": "./alerts"}
         ]
       },
       {
         "label": "tools_menu",
         "items": [
-          {"label": "rules_engine", "href": "/rules"},
-          {"label": "digital_twins", "href": "/twins"},
-          {"label": "assets", "href": "/assets"}
+          {"label": "rules_engine", "href": "./rules"},
+          {"label": "digital_twins", "href": "./twins"},
+          {"label": "assets", "href": "./assets"}
         ]
       }
     ],
@@ -46,9 +46,9 @@
           "href": "#", 
           "icon": "fa-solid fa-microchip",
           "subItems": [
-            {"label": "device_list", "href": "/devices", "icon": "fa-solid fa-list"},
-            {"label": "add_device", "href": "/devices/add", "icon": "fa-solid fa-plus"},
-            {"label": "device_types", "href": "/devices/types", "icon": "fa-solid fa-tags"}
+            {"label": "device_list", "href": "./devices", "icon": "fa-solid fa-list"},
+            {"label": "add_device", "href": "./devices/add", "icon": "fa-solid fa-plus"},
+            {"label": "device_types", "href": "./devices/types", "icon": "fa-solid fa-tags"}
           ]
         },
         {"label": "gateways", "href": "#", "icon": "fa-solid fa-route"},
@@ -59,9 +59,9 @@
           "href": "#", 
           "icon": "fa-solid fa-cogs",
           "subItems": [
-            {"label": "rule_list", "href": "/rules", "icon": "fa-solid fa-list"},
-            {"label": "create_rule", "href": "/rules/create", "icon": "fa-solid fa-plus"},
-            {"label": "rule_templates", "href": "/rules/templates", "icon": "fa-solid fa-file-lines"}
+            {"label": "rule_list", "href": "./rules", "icon": "fa-solid fa-list"},
+            {"label": "create_rule", "href": "./rules/create", "icon": "fa-solid fa-plus"},
+            {"label": "rule_templates", "href": "./rules/templates", "icon": "fa-solid fa-file-lines"}
           ]
         },
         {"label": "digital_twins", "href": "#", "icon": "fa-solid fa-cubes"},
