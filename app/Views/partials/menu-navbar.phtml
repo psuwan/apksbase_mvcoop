@@ -1,81 +1,42 @@
 <?php
-// Expects $appName available in parent scope
+// Navbar menu template
+// Expected variables: $nav (array with navbar configuration)
+$nav = $GLOBALS['nav'] ?? [];
 ?>
 <ul class="navbar-nav me-auto">
-  <?php $nav = $menu['navbar'] ?? array(); ?>
-  <?php if (!empty($nav['left']) && is_array($nav['left'])): ?>
-    <?php foreach ($nav['left'] as $link): ?>
-      <li class="nav-item">
-        <a class="nav-link" href="<?php echo htmlspecialchars((string)($link['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($link['label'] ?? ''))); ?></a>
-      </li>
-    <?php endforeach; ?>
-  <?php endif; ?>
+  <!-- Simplified menu: 4 items total, 2 with sub-menus -->
+  <li class="nav-item">
+    <a class="nav-link" href="/">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/sample">Sample</a>
+  </li>
   
-  <?php if (!empty($nav['leftDropdowns']) && is_array($nav['leftDropdowns'])): ?>
-    <?php foreach ($nav['leftDropdowns'] as $index => $dropdown): ?>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navDropdown<?php echo $index; ?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-          <?php echo htmlspecialchars(\App\Core\I18n::t((string)($dropdown['label'] ?? ''))); ?>
-        </a>
-        <ul class="dropdown-menu" aria-labelledby="navDropdown<?php echo $index; ?>">
-          <?php if (!empty($dropdown['items']) && is_array($dropdown['items'])): ?>
-            <?php foreach ($dropdown['items'] as $item): ?>
-              <?php if (isset($item['divider']) && $item['divider']): ?>
-                <li><hr class="dropdown-divider"></li>
-              <?php else: ?>
-                <li><a class="dropdown-item" href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></a></li>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          <?php endif; ?>
-        </ul>
-      </li>
-    <?php endforeach; ?>
-  <?php endif; ?>
-</ul>
-<ul class="navbar-nav ms-auto">
-    <?php if (!empty($nav['rightGroups']) && is_array($nav['rightGroups'])): ?>
-      <?php foreach ($nav['rightGroups'] as $index => $group): ?>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navRightDropdown<?php echo $index; ?>" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <?php echo htmlspecialchars(\App\Core\I18n::t((string)($group['title'] ?? ''))); ?>
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navRightDropdown<?php echo $index; ?>">
-            <?php if (!empty($group['items']) && is_array($group['items'])): ?>
-              <?php foreach ($group['items'] as $item): ?>
-                <?php if (isset($item['divider']) && $item['divider']): ?>
-                  <li><hr class="dropdown-divider"></li>
-                <?php else: ?>
-                  <li><a class="dropdown-item" href="<?php echo htmlspecialchars((string)($item['href'] ?? '#')); ?>"><?php echo htmlspecialchars(\App\Core\I18n::t((string)($item['label'] ?? ''))); ?></a></li>
-                <?php endif; ?>
-              <?php endforeach; ?>
-            <?php endif; ?>
-          </ul>
-        </li>
-      <?php endforeach; ?>
-    <?php endif; ?>
-    <li class="nav-item">
-      <span style="margin-left:1rem"></span>
-    </li>
-    <li class="nav-item lang-switch">
-      <?php $currentLang = \App\Core\I18n::getLocale(); $targetLang = ($currentLang === 'th') ? 'en' : 'th'; ?>
-      <a class="nav-link" href="?lang=<?php echo htmlspecialchars($targetLang); ?>"
-         title="<?php echo ($targetLang === 'th') ? 'Switch to ไทย' : 'Switch to English'; ?>"
-         aria-label="<?php echo ($targetLang === 'th') ? 'Switch to Thai' : 'Switch to English'; ?>">
-        <?php if ($currentLang === 'en'): ?>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 60 40" style="display:block;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)">
-            <rect width="60" height="40" fill="#012169"/>
-            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#fff" stroke-width="8"/>
-            <path d="M0,0 L60,40 M60,0 L0,40" stroke="#C8102E" stroke-width="4"/>
-            <path d="M30,0 V40 M0,20 H60" stroke="#fff" stroke-width="10"/>
-            <path d="M30,0 V40 M0,20 H60" stroke="#C8102E" stroke-width="6"/>
-          </svg>
-        <?php else: ?>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 60 40" style="display:block;border-radius:2px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.2)">
-            <rect width="60" height="40" fill="#A51931"/>
-            <rect y="8" width="60" height="24" fill="#fff"/>
-            <rect y="14" width="60" height="12" fill="#2D2A4A"/>
-          </svg>
-        <?php endif; ?>
-      </a>
-    </li>
+  <!-- System Menu dropdown -->
+  <li class="nav-item dropdown mobile-accordion">
+    <a class="nav-link dropdown-toggle mobile-accordion-toggle" href="#" id="navDropdown0" role="button" data-bs-target="#mobileAccordion0" aria-expanded="false">
+      System
+    </a>
+    <ul class="dropdown-menu mobile-accordion-content collapse" id="mobileAccordion0" aria-labelledby="navDropdown0">
+      <li><a class="dropdown-item" href="/devices">Devices</a></li>
+      <li><a class="dropdown-item" href="/gateways">Gateways</a></li>
+      <li><a class="dropdown-item" href="/telemetry">Telemetry</a></li>
+      <li><a class="dropdown-item" href="/alerts">Alerts</a></li>
+    </ul>
+  </li>
+  
+  <!-- Tools Menu dropdown -->
+  <li class="nav-item dropdown mobile-accordion">
+    <a class="nav-link dropdown-toggle mobile-accordion-toggle" href="#" id="navDropdown1" role="button" data-bs-target="#mobileAccordion1" aria-expanded="false">
+      Tools
+    </a>
+    <ul class="dropdown-menu mobile-accordion-content collapse" id="mobileAccordion1" aria-labelledby="navDropdown1">
+      <li><a class="dropdown-item" href="/rules">Rules Engine</a></li>
+      <li><a class="dropdown-item" href="/twins">Digital Twins</a></li>
+      <li><a class="dropdown-item" href="/assets">Assets</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="/users">Users</a></li>
+      <li><a class="dropdown-item" href="/profile">Profile</a></li>
+    </ul>
+  </li>
 </ul>

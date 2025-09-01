@@ -50,6 +50,18 @@
     .navbar .links .lang-switch{display:none}
     /* Mobile navbar collapse (Bootstrap-like) */
     .nav-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--nav-text);margin-left:.25rem}
+    .navbar-collapse{display:none;width:100%;position:absolute;top:100%;left:0;background:var(--nav);border-top:1px solid rgba(255,255,255,.15);box-shadow:0 4px 8px rgba(0,0,0,.2);z-index:1050}
+    .navbar-collapse.show{display:block}
+    .navbar-collapse .navbar-nav{flex-direction:column;padding:1rem;gap:.5rem}
+    .navbar-collapse .navbar-nav .nav-item{width:100%}
+    .navbar-collapse .navbar-nav .nav-link{padding:.5rem 0;border-bottom:1px solid rgba(255,255,255,.1)}
+    .navbar-collapse .navbar-nav .dropdown-menu{position:static;box-shadow:none;border:none;background:transparent;padding-left:1rem}
+    /* Mobile accordion styles */
+    .mobile-accordion .mobile-accordion-content{position:static;width:100%;background:rgba(255,255,255,.05);border:none;border-radius:0;margin-top:.5rem;padding:.5rem 0}
+    .mobile-accordion .mobile-accordion-content .dropdown-item{padding:.5rem 1rem;color:var(--nav-text);border-bottom:1px solid rgba(255,255,255,.1)}
+    .mobile-accordion .mobile-accordion-content .dropdown-item:hover{background:rgba(255,255,255,.1)}
+    .mobile-accordion .mobile-accordion-toggle::after{transition:transform 0.3s ease}
+    .mobile-accordion .mobile-accordion-toggle[aria-expanded="true"]::after{transform:rotate(180deg)}
     .nav-collapse{display:none}
     .nav-collapse.show{display:block}
     /* Dropdown anchored under the button on mobile */
@@ -63,6 +75,11 @@
     .nav-collapse.show .links .menu .muted{display:block;padding:.375rem .25rem;text-align:left !important}
     @media (min-width: 768px){
       .nav-toggle{display:none}
+      .navbar-collapse{display:flex!important;position:static;width:auto;background:transparent;border:none;box-shadow:none;padding:0}
+      .navbar-collapse .navbar-nav{flex-direction:row;padding:0;gap:.5rem}
+      .navbar-collapse .navbar-nav .nav-item{width:auto}
+      .navbar-collapse .navbar-nav .nav-link{padding:.5rem 1rem;border-bottom:none}
+      .navbar-collapse .navbar-nav .dropdown-menu{position:absolute;box-shadow:var(--shadow);border:1px solid var(--border);background:var(--card);padding:.5rem 0}
       .nav-collapse{display:flex;gap:.5rem;align-items:center;min-width:0;flex:1 1 auto}
       /* Reset layout to inline for tablet/desktop */
       .nav-drop{position:static}
@@ -72,123 +89,48 @@
       .nav-collapse .links .menu .right{flex-direction:row;margin-left:auto}
       /* On desktop, keep global flag on right and hide any partial flag */
       .navbar .links .lang-switch{display:none}
+      /* Desktop dropdown behavior */
     }
 
-    /* Bootstrap Integration Styles */
-    /* Override Bootstrap navbar styles to match existing design */
-    .navbar-dark .navbar-brand,
-    .navbar-dark .navbar-nav .nav-link {
-      color: var(--nav-text) !important;
-      opacity: 0.95;
-    }
-    .navbar-dark .navbar-nav .nav-link:hover {
-      opacity: 1;
-    }
-    .navbar-dark .navbar-toggler {
-      border-color: rgba(255,255,255,.15);
-    }
-    .navbar-dark .navbar-toggler-icon {
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28229, 231, 235, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    /* Bootstrap Integration & Component Styles */
+    .navbar-dark .navbar-brand,.navbar-dark .navbar-nav .nav-link{color:var(--nav-text)!important;opacity:.95}
+    .navbar-dark .navbar-nav .nav-link:hover{opacity:1}
+    .navbar-dark .navbar-toggler{border-color:rgba(255,255,255,.15)}
+    .navbar-dark .navbar-toggler-icon{background-image:url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28229, 231, 235, 0.95%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e")}
+    .bootstrap-card,.bootstrap-card .card-header,.bootstrap-card .card-body{background:var(--card)}
+    .bootstrap-card{border:1px solid var(--border);box-shadow:var(--shadow)}
+    .bootstrap-card .card-header{border-bottom:1px solid var(--border);font-weight:700}
+    .navbar,.card,.btn{font-family:'Prompt',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif}
+    
+    /* Dropdown & Navigation Styles */
+    .dropdown{position:relative}
+    .dropdown-menu{background-color:var(--card);border:1px solid var(--border);box-shadow:var(--shadow);z-index:1050!important;position:absolute!important;display:none}
+    
+    /* Desktop: Enable Bootstrap dropdowns */
+    @media (min-width: 768px) {
+      .dropdown-menu.show{display:block!important}
+      .mobile-accordion .dropdown-menu{position:absolute!important;box-shadow:var(--shadow)!important;border:1px solid var(--border)!important}
     }
     
-    /* Ensure Bootstrap cards match existing design */
-    .bootstrap-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+    /* Mobile: Use accordion behavior */
+    @media (max-width: 767.98px) {
+      .mobile-accordion .dropdown-menu.show{position:static!important;display:block!important;box-shadow:none!important;border:none!important}
     }
-    .bootstrap-card .card-header {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      font-weight: 700;
-    }
-    .bootstrap-card .card-body {
-      background: var(--card);
-    }
+    .navbar .dropdown-menu{z-index:1060!important;min-width:160px}
+    .dropdown-item{color:var(--text);display:block;width:100%;padding:.375rem 1rem;clear:both;font-weight:400;text-align:inherit;text-decoration:none;white-space:nowrap;background-color:transparent;border:0}
+    .dropdown-item:hover,.dropdown-item:focus{background-color:var(--hover);color:var(--text)}
+    .navbar,.navbar-inner,.nav-collapse{overflow:visible!important}
     
-    /* Maintain existing font family for Bootstrap components */
-    .navbar, .card, .btn {
-      font-family: 'Prompt', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
-    }
-    
-    /* Dropdown menu styling */
-    .dropdown-menu {
-      background-color: var(--card);
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow);
-      z-index: 1050 !important;
-      position: absolute !important;
-      display: none;
-    }
-    .dropdown-menu.show {
-      display: block !important;
-    }
-    .dropdown-item {
-      color: var(--text);
-      display: block;
-      width: 100%;
-      padding: 0.375rem 1rem;
-      clear: both;
-      font-weight: 400;
-      text-align: inherit;
-      text-decoration: none;
-      white-space: nowrap;
-      background-color: transparent;
-      border: 0;
-    }
-    .dropdown-item:hover, .dropdown-item:focus {
-      background-color: var(--hover);
-      color: var(--text);
-    }
-    
-    /* Ensure dropdown parent has relative positioning */
-    .dropdown {
-      position: relative;
-    }
-    
-    /* Navbar specific dropdown fixes */
-    .navbar .dropdown-menu {
-      z-index: 1060 !important;
-      min-width: 160px;
-    }
-    
-    /* Prevent navbar from clipping dropdowns */
-    .navbar {
-      overflow: visible !important;
-    }
-    .navbar-inner {
-      overflow: visible !important;
-    }
-    .nav-collapse {
-      overflow: visible !important;
-    }
-    
-    /* Sidebar dropdown styling */
-    .sidebar .dropdown-toggle::after {
-      float: right;
-      margin-top: 0.5rem;
-    }
-    .sidebar .collapse ul {
-      padding-left: 1.5rem;
-      margin-top: 0.5rem;
-    }
-    .sidebar .collapse ul li a {
-      padding: 0.25rem 0;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-    .sidebar .collapse ul li a:hover {
-      opacity: 1;
-    }
-    @media (min-width: 992px){
+    /* Sidebar Styles */
+    .sidebar .dropdown-toggle::after{float:right;margin-top:.5rem}
+    .sidebar .collapse ul{padding-left:1.5rem;margin-top:.5rem}
+    .sidebar .collapse ul li a{padding:.25rem 0;font-size:.9rem;opacity:.8}
+    .sidebar .collapse ul li a:hover{opacity:1}
+    @media (min-width:992px){
       .nav-collapse{margin-left:auto}
-    }
-    /* Align and position on large screens */
-    @media (min-width: 992px){
       .navbar .menu{position:relative;justify-content:flex-end}
       .navbar .brand{margin-right:0}
       .navbar .brand.brand-center{display:block;position:absolute;left:50%;transform:translateX(-50%);text-align:center;pointer-events:none}
-      /* Hide inner partial brand on desktop to avoid duplication */
       .navbar .links .brand{display:none}
     }
 
@@ -297,6 +239,18 @@
     /* Mobile-visible language switch (outside dropdown) */
     .mobile-lang{margin-left:.5rem;display:inline-flex;align-items:center}
     @media (min-width: 768px){ .mobile-lang{display:none} }
+    
+    /* Ensure navbar content is visible on desktop */
+    @media (min-width: 768px) {
+      .navbar-collapse {
+        display: flex !important;
+      }
+    }
+    
+    /* Debug: Make navbar content visible */
+    .navbar-nav {
+      display: flex !important;
+    }
   </style>
 </head>
 <body>
@@ -342,7 +296,11 @@
           <?php echo htmlspecialchars((string)$appName); ?>
         </div>
       </div>
-      <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-sidebar.phtml'; ?>
+      <?php 
+        // Make menu variable available to the included template
+        $GLOBALS['menu'] = $menu;
+        include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-sidebar.phtml'; 
+      ?>
     </aside>
 
     <div class="right-col">
@@ -389,16 +347,20 @@
                 </svg>
               <?php endif; ?>
             </a>
-            <div class="nav-drop">
-            <button type="button" id="nav-toggle" class="navbar-toggler nav-toggle" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" title="Toggle navigation" aria-label="Toggle navigation">
+            <button type="button" id="nav-toggle" class="navbar-toggler nav-toggle" aria-controls="navMain" aria-expanded="false" title="Toggle navigation" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <div id="navMain" class="collapse navbar-collapse nav-collapse" role="region" aria-label="Primary navigation">
-              <div class="navbar-nav links" style="display:flex;gap:.5rem;align-items:center;min-width:0;flex:1 1 auto">
-                <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-navbar.phtml'; ?>
-              </div>
-            </div>
           </div>
+          
+          <!-- Mobile collapsible menu (full width) -->
+          <div id="navMain" class="collapse navbar-collapse" role="region" aria-label="Primary navigation">
+            <div class="navbar-nav" style="display:flex;gap:.5rem;align-items:center;min-width:0;flex:1 1 auto">
+              <?php 
+                // Make menu variable available to navbar template
+                $GLOBALS['nav'] = $menu['navbar'] ?? [];
+                include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-navbar.phtml'; 
+              ?>
+            </div>
           </div>
         </div>
       </nav>
@@ -414,7 +376,7 @@
           </div>
         </div>
       </main>
-      <footer class="site-footer" style="padding: .75rem 1.25rem; color: var(--muted);">
+      <footer class="site-footer" style="padding:.75rem 1.25rem;color:var(--muted)">
         <?php include __DIR__ . DIRECTORY_SEPARATOR . 'partials' . DIRECTORY_SEPARATOR . 'menu-footer.phtml'; ?>
       </footer>
     </div>
@@ -469,128 +431,119 @@
       }
       closeNavOnDesktop();
       window.addEventListener('resize', closeNavOnDesktop);
-      navToggle && navToggle.addEventListener('click', function(){
+      navToggle && navToggle.addEventListener('click', function(e){
+        e.preventDefault();
         if (!navMain) return;
-        var isOpen = navMain.classList.toggle('show');
-        navToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        
+        // Check current state
+        var isCurrentlyOpen = navMain.classList.contains('show');
+        var isExpanded = navToggle.getAttribute('aria-expanded') === 'true';
+        
+        // Toggle based on current state
+        if (isCurrentlyOpen || isExpanded) {
+          // Close the menu
+          navMain.classList.remove('show');
+          navToggle.setAttribute('aria-expanded', 'false');
+          navToggle.classList.add('collapsed');
+        } else {
+          // Open the menu
+          navMain.classList.add('show');
+          navToggle.setAttribute('aria-expanded', 'true');
+          navToggle.classList.remove('collapsed');
+        }
+      });
+
+      // Responsive dropdown/accordion behavior
+      var mobileAccordionToggles = document.querySelectorAll('.mobile-accordion-toggle');
+      
+      function updateResponsiveBehavior() {
+        var isDesktop = window.innerWidth >= 768;
+        
+        mobileAccordionToggles.forEach(function(toggle) {
+          if (isDesktop) {
+            // Desktop: Enable Bootstrap dropdown
+            toggle.setAttribute('data-bs-toggle', 'dropdown');
+            toggle.setAttribute('aria-expanded', 'false');
+            var target = toggle.getAttribute('data-bs-target');
+            var content = document.querySelector(target);
+            if (content) {
+              content.classList.remove('show', 'collapse');
+            }
+          } else {
+            // Mobile: Remove Bootstrap dropdown, use accordion
+            toggle.removeAttribute('data-bs-toggle');
+            toggle.setAttribute('aria-expanded', 'false');
+            var target = toggle.getAttribute('data-bs-target');
+            var content = document.querySelector(target);
+            if (content) {
+              content.classList.remove('show');
+              content.classList.add('collapse');
+            }
+          }
+        });
+        
+        // Reinitialize Bootstrap dropdowns on desktop
+        if (isDesktop && typeof bootstrap !== 'undefined') {
+          mobileAccordionToggles.forEach(function(toggle) {
+            try {
+              new bootstrap.Dropdown(toggle);
+            } catch(e) {}
+          });
+        }
+      }
+      
+      // Initial setup
+      updateResponsiveBehavior();
+      
+      // Update on window resize
+      window.addEventListener('resize', updateResponsiveBehavior);
+      
+      // Mobile accordion click handler
+      mobileAccordionToggles.forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+          // Only prevent default and use accordion behavior on mobile screens
+          if (window.innerWidth < 768) {
+            e.preventDefault();
+            
+            var target = this.getAttribute('data-bs-target');
+            var content = document.querySelector(target);
+            
+            if (content) {
+              var isExpanded = this.getAttribute('aria-expanded') === 'true';
+              
+              // Close all other accordions
+              mobileAccordionToggles.forEach(function(otherToggle) {
+                if (otherToggle !== toggle) {
+                  var otherTarget = otherToggle.getAttribute('data-bs-target');
+                  var otherContent = document.querySelector(otherTarget);
+                  if (otherContent) {
+                    otherContent.classList.remove('show');
+                    otherToggle.setAttribute('aria-expanded', 'false');
+                  }
+                }
+              });
+              
+              // Toggle current accordion
+              if (isExpanded) {
+                content.classList.remove('show');
+                this.setAttribute('aria-expanded', 'false');
+              } else {
+                content.classList.add('show');
+                this.setAttribute('aria-expanded', 'true');
+              }
+            }
+          }
+          // On desktop, let Bootstrap handle the dropdown behavior
+        });
       });
     })();
   </script>
   <!-- Bootstrap JavaScript (Local with CDN fallback) -->
-    <script src="./bootstrap/js/bootstrap.bundle.min.js" onload="console.log('Bootstrap script loaded successfully');" onerror="console.error('Bootstrap script failed to load'); loadBootstrapCDN();"></script>
-    <script>
-      function loadBootstrapCDN() {
-        console.log('Loading Bootstrap from CDN as fallback...');
-        var script = document.createElement('script');
-        script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';
-        script.onload = function() {
-          console.log('Bootstrap CDN loaded successfully');
-          // Initialize components now that Bootstrap is loaded
-          if (typeof initializeBootstrapComponents === 'function') {
-            initializeBootstrapComponents();
-          }
-        };
-        script.onerror = function() {
-          console.error('Bootstrap CDN also failed to load');
-        };
-        document.head.appendChild(script);
-      }
-    </script>
-    <script>
-      // Global error handler to catch JavaScript errors
-      window.addEventListener('error', function(e) {
-        console.error('JavaScript Error:', e.error);
-        console.error('Error message:', e.message);
-        console.error('Error filename:', e.filename);
-        console.error('Error line:', e.lineno);
-        var debugDiv = document.getElementById('debug-indicator');
-        if (debugDiv) {
-          debugDiv.textContent = 'DEBUG: JS ERROR - ' + e.message;
-          debugDiv.style.background = 'orange';
-        }
-      });
-      
-      // Debug Bootstrap dropdown initialization and click events
-      document.addEventListener('DOMContentLoaded', function() {
-        // Add visual indicator that script is running
-        document.title = 'DEBUG: Script loaded - ' + document.title;
-        console.log('=== BOOTSTRAP DEBUG SCRIPT STARTED ===');
-        console.log('Document ready state:', document.readyState);
-        console.log('Window location:', window.location.href);
-        
-        function checkBootstrap(attempt) {
-          console.log('Bootstrap check attempt ' + attempt + ':');
-          console.log('- typeof bootstrap:', typeof bootstrap);
-          console.log('- window.bootstrap:', typeof window.bootstrap);
-          console.log('- Bootstrap version:', typeof bootstrap !== 'undefined' ? bootstrap.Tooltip.VERSION : 'Bootstrap not loaded');
-          console.log('- Bootstrap object keys:', typeof bootstrap !== 'undefined' ? Object.keys(bootstrap) : 'Not available');
-          
-          // Check if Bootstrap script is in DOM
-          var bootstrapScripts = document.querySelectorAll('script[src*="bootstrap"]');
-          console.log('- Bootstrap scripts found in DOM:', bootstrapScripts.length);
-          bootstrapScripts.forEach(function(script, index) {
-            console.log('  Script ' + index + ':', script.src, 'loaded:', script.readyState || 'unknown');
-          });
-          
-          return typeof bootstrap !== 'undefined';
-        }
-        
-        // Check Bootstrap immediately
-        var bootstrapLoaded = checkBootstrap(1);
-        if (bootstrapLoaded) {
-          initializeBootstrapComponents();
-        }
-        
-        // If not loaded, check again after delays
-        if (!bootstrapLoaded) {
-          setTimeout(function() {
-            bootstrapLoaded = checkBootstrap(2);
-            if (bootstrapLoaded) {
-              initializeBootstrapComponents();
-            } else {
-              setTimeout(function() {
-                bootstrapLoaded = checkBootstrap(3);
-                if (bootstrapLoaded) {
-                  initializeBootstrapComponents();
-                }
-              }, 2000);
-            }
-          }, 500);
-        }
-        
-        // Initialize Bootstrap components
-        function initializeBootstrapComponents() {
-          if (typeof bootstrap === 'undefined') {
-            return false;
-          }
-          
-          // Initialize navbar dropdowns
-          var navDropdowns = document.querySelectorAll('.navbar .dropdown-toggle');
-          navDropdowns.forEach(function(el) {
-            try {
-              new bootstrap.Dropdown(el);
-            } catch(e) {
-              console.error('Failed to initialize navbar dropdown:', e);
-            }
-          });
-          
-          // Initialize sidebar collapse elements
-          var sidebarCollapses = document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]');
-          sidebarCollapses.forEach(function(el) {
-            try {
-              var targetSelector = el.getAttribute('href');
-              var targetElement = document.querySelector(targetSelector);
-              if (targetElement) {
-                new bootstrap.Collapse(targetElement, {toggle: false});
-              }
-            } catch(e) {
-              console.error('Failed to initialize sidebar collapse:', e);
-            }
-          });
-          
-          return true;
-        }
-      });
-    </script>
+  <script src="./bootstrap/js/bootstrap.bundle.min.js" onerror="loadBootstrapCDN()"></script>
+  <script>
+    function loadBootstrapCDN(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js';s.onload=initBootstrap;document.head.appendChild(s)}
+    function initBootstrap(){if(typeof bootstrap==='undefined')return;document.querySelectorAll('.navbar .dropdown-toggle').forEach(function(el){try{new bootstrap.Dropdown(el)}catch(e){}});document.querySelectorAll('.sidebar [data-bs-toggle="collapse"]').forEach(function(el){try{var target=document.querySelector(el.getAttribute('href'));if(target)new bootstrap.Collapse(target,{toggle:false})}catch(e){}})}
+    document.addEventListener('DOMContentLoaded',function(){setTimeout(initBootstrap,100)})
+  </script>
 </body>
 </html>
