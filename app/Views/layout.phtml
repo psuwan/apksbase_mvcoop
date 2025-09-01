@@ -38,7 +38,7 @@
 
     /* Mobile-first Navbar */
     .navbar{position:sticky;top:0;z-index:20;background:var(--nav);color:var(--nav-text);padding:.5rem .75rem;box-shadow:var(--shadow)}
-    .navbar .menu{display:flex;gap:.5rem;align-items:center;position:relative}
+    .navbar .menu{display:flex;gap:1.5rem;align-items:center;position:relative}
     .navbar .brand{font-weight:700;letter-spacing:.2px;font-size:1rem;white-space:nowrap}
     .brand-center{display:none}
     .navbar a{color:var(--nav-text);opacity:.95}
@@ -50,7 +50,7 @@
     .navbar .links .lang-switch{display:none}
     /* Mobile navbar collapse (Bootstrap-like) */
     .nav-toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:6px;border:1px solid rgba(255,255,255,.15);background:transparent;color:var(--nav-text);margin-left:.25rem}
-    .navbar-collapse{display:none;width:100%;position:absolute;top:100%;left:0;background:var(--nav);border-top:1px solid rgba(255,255,255,.15);box-shadow:0 4px 8px rgba(0,0,0,.2);z-index:1050}
+    .navbar-collapse{display:none;width:100%;position:absolute;top:calc(100% + 1rem);left:0;background:var(--nav);border-top:1px solid rgba(255,255,255,.15);box-shadow:0 4px 8px rgba(0,0,0,.2);z-index:1050}
     .navbar-collapse.show{display:block}
     .navbar-collapse .navbar-nav{flex-direction:column;padding:1rem;gap:.5rem}
     .navbar-collapse .navbar-nav .nav-item{width:100%}
@@ -58,7 +58,7 @@
     .navbar-collapse .navbar-nav .dropdown-menu{position:static;box-shadow:none;border:none;background:transparent;padding-left:1rem}
     /* Mobile accordion styles */
     .mobile-accordion .mobile-accordion-content{position:static;width:100%;background:rgba(255,255,255,.05);border:none;border-radius:0;margin-top:.5rem;padding:.5rem 0}
-    .mobile-accordion .mobile-accordion-content .dropdown-item{padding:.5rem 1rem;color:var(--nav-text);border-bottom:1px solid rgba(255,255,255,.1)}
+    .mobile-accordion .mobile-accordion-content .dropdown-item{padding:.5rem 1rem;color:var(--nav-text);border-bottom:1px solid rgba(255,255,255,.1);text-align: right;}
     .mobile-accordion .mobile-accordion-content .dropdown-item:hover{background:rgba(255,255,255,.1)}
     .mobile-accordion .mobile-accordion-toggle::after{transition:transform 0.3s ease}
     .mobile-accordion .mobile-accordion-toggle[aria-expanded="true"]::after{transform:rotate(180deg)}
@@ -75,12 +75,13 @@
     .nav-collapse.show .links .menu .muted{display:block;padding:.375rem .25rem;text-align:left !important}
     @media (min-width: 768px){
       .nav-toggle{display:none}
-      .navbar-collapse{display:flex!important;position:static;width:auto;background:transparent;border:none;box-shadow:none;padding:0}
-      .navbar-collapse .navbar-nav{flex-direction:row;padding:0;gap:.5rem}
+      .navbar-collapse{display:flex!important;position:static;width:auto;background:transparent;border:none;box-shadow:none;padding:0;justify-content:flex-end}
+      .navbar-collapse .navbar-nav{flex-direction:row;padding:0;gap:.5rem;margin-left:auto;text-align:right}
       .navbar-collapse .navbar-nav .nav-item{width:auto}
       .navbar-collapse .navbar-nav .nav-link{padding:.5rem 1rem;border-bottom:none}
       .navbar-collapse .navbar-nav .dropdown-menu{position:absolute;box-shadow:var(--shadow);border:1px solid var(--border);background:var(--card);padding:.5rem 0}
       .nav-collapse{display:flex;gap:.5rem;align-items:center;min-width:0;flex:1 1 auto}
+      .navbar-nav{justify-content:flex-end;margin-left:auto}
       /* Reset layout to inline for tablet/desktop */
       .nav-drop{position:static}
       .nav-drop .nav-collapse{position:static;top:auto;left:auto;background:transparent;border:0;border-radius:0;padding:0;box-shadow:none;min-width:0}
@@ -172,7 +173,7 @@
     .sidebar .section{margin-bottom:1rem}
     .sidebar .section h4{font-size:.85rem;color:#9ca3af;text-transform:uppercase;margin:.75rem .5rem}
     .sidebar ul{list-style:none;margin:0;padding:0}
-    .sidebar li{margin:.25rem 0}
+    .sidebar li{margin:.25rem 0 0.25rem 1rem}
     .sidebar a{display:flex;align-items:center;gap:.5rem;padding:.5rem .75rem;border-radius:8px;color:var(--sidebar-text)}
     .sidebar a:hover{background:#1f2937}
     /* Overlay when sidebar open */

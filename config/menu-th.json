@@ -3,7 +3,7 @@
     "brand": "ตัวเริ่มระบบ IIoT",
     "left": [
       {"label": "home", "href": "./"},
-      {"label": "hello-ddddd", "href": "./hello"},
+      {"label": "hello", "href": "./hello"},
       {"label": "sample", "href": "./sample"}
     ],
     "leftDropdowns": [
